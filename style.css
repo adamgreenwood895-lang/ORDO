@@ -75,7 +75,7 @@ body::after {
 .orb-hitbox {
   position: absolute;
 
-  top: 75%;              /* 👈 adjust this, not bottom */
+  top: 55%;              /* 👈 adjust this, not bottom */
   left: 50%;
   transform: translate(-50%, -50%);
 

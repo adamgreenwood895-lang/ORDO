@@ -1,1 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tracking</title>
 
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    .tracking-card {
+      width: 100%;
+      max-width: 380px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      padding: 30px 26px;
+      box-sizing: border-box;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 34px;
+      line-height: 1.5;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 18px;
+    }
+
+    .line {
+      position: absolute;
+      left: 6px;
+      top: 6px;
+      width: 2px;
+      height: calc(100% - 12px);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .line-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 0%;
+      background: white;
+      transition: height 2s ease;
+    }
+
+    .step {
+      position: relative;
+      margin-bottom: 34px;
+      padding-left: 30px;
+      color: rgba(255,255,255,0.35);
+      transition: color 0.5s ease;
+    }
+
+    .step:last-child {
+      margin-bottom: 0;
+    }
+
+    .dot {
+      position: absolute;
+      left: -18px;
+      top: 2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      transition: all 0.5s ease;
+    }
+
+    .step.active {
+      color: white;
+    }
+
+    .step.active .dot {
+      background: white;
+      box-shadow: 0 0 18px rgba(255,255,255,0.7);
+      transform: scale(1.15);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tracking-card">
+    <h1>Order Confirmed</h1>
+    <div class="subtitle">Your order is on its way.</div>
+
+    <div class="timeline">
+      <div class="line">
+        <div class="line-fill" id="lineFill"></div>
+      </div>
+
+      <div class="step active">
+        <div class="dot"></div>
+        Preparing your order
+      </div>
+
+      <div class="step">
+        <div class="dot"></div>
+        Packed
+      </div>
+
+      <div class="step">
+        <div class="dot"></div>
+        Out for delivery
+      </div>
+
+      <div class="step">
+        <div class="dot"></div>
+        Delivered
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const steps = document.querySelectorAll(".step");
+    const lineFill = document.getElementById("lineFill");
+
+    let current = 0;
+
+    const heights = [0, 33, 66, 100];
+
+    setInterval(() => {
+      if (current < steps.length - 1) {
+        current++;
+        steps[current].classList.add("active");
+        lineFill.style.height = heights[current] + "%";
+      }
+    }, 2200);
+  </script>
+
+</body>
+</html>

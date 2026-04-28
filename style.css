@@ -75,17 +75,16 @@ body::after {
 .orb-hitbox {
   position: absolute;
 
-  top: 55%;              /* 👈 adjust this, not bottom */
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
   width: 85px;
   height: 85px;
   border-radius: 50%;
-
   cursor: pointer;
 
-  background: none; /* keep for now (debug) */
+  background: none;
   box-shadow: none;
 }
 .orb-hitbox.listening {

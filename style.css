@@ -106,7 +106,7 @@ body::after {
 }
 #chat {
   position: absolute;
-  top: 10%; /* 👈 moved up */
+  top: 80%; /* 👈 moved up */
   left: 0;
   width: 100%;
   padding: 16px;
@@ -121,8 +121,8 @@ body::after {
 .message {
   background: none;
   padding: 0;
-  color: rgba(255,255,255,0.5); /* 👈 more transparent */
-  font-size: 14px;
+  color: rgba(255,255,255,0.3); /* 👈 more transparent */
+  font-size: 11px;
   letter-spacing: 0.5px;
 }
 .message.ai {

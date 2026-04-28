@@ -106,19 +106,22 @@ body::after {
 }
 #chat {
   position: absolute;
-  top: 18%;
+  top: 10%; /* 👈 moved up */
   left: 0;
   width: 100%;
   padding: 16px;
+
   display: flex;
   flex-direction: column;
   gap: 10px;
+
   pointer-events: none;
 }
+
 .message {
   background: none;
   padding: 0;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255,255,255,0.5); /* 👈 more transparent */
   font-size: 14px;
   letter-spacing: 0.5px;
 }

@@ -1,1 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORDO Products</title>
+  <link rel="stylesheet" href="style.css?v=10">
+</head>
+<body class="bg-landing">
 
+  <div class="products-page">
+
+    <div class="category-title" id="categoryTitle"></div>
+
+    <div class="product-stage" id="productStage"></div>
+
+  </div>
+
+  <script>
+    const category = localStorage.getItem("category") || "hoodies";
+
+    const categoryTitle = document.getElementById("categoryTitle");
+    const productStage = document.getElementById("productStage");
+
+    categoryTitle.textContent = category;
+
+    const products = {
+      hoodies: [
+        {
+          image: "assets/hoodies/hoodie1.jpg",
+          name: "Black Essential Hoodie",
+          price: "£60"
+        },
+        {
+          image: "assets/hoodies/hoodie2.jpg",
+          name: "Stone Oversized Hoodie",
+          price: "£68"
+        },
+        {
+          image: "assets/hoodies/hoodie3.jpg",
+          name: "Grey Signature Hoodie",
+          price: "£72"
+        },
+        {
+          image: "assets/hoodies/hoodie4.jpg",
+          name: "White Minimal Hoodie",
+          price: "£65"
+        }
+      ],
+
+      tracksuits: [
+        {
+          image: "assets/tracksuits/tracksuit1.jpg",
+          name: "Black Performance Tracksuit",
+          price: "£120"
+        },
+        {
+          image: "assets/tracksuits/tracksuit2.jpg",
+          name: "Grey Tech Tracksuit",
+          price: "£128"
+        },
+        {
+          image: "assets/tracksuits/tracksuit3.jpg",
+          name: "Stone Zip Tracksuit",
+          price: "£132"
+        },
+        {
+          image: "assets/tracksuits/tracksuit4.jpg",
+          name: "Midnight Slim Tracksuit",
+          price: "£138"
+        }
+      ],
+
+      bags: [
+        {
+          image: "assets/bags/bag1.jpg",
+          name: "Black Crossbody Bag",
+          price: "£45"
+        },
+        {
+          image: "assets/bags/bag2.jpg",
+          name: "Utility Backpack",
+          price: "£58"
+        },
+        {
+          image: "assets/bags/bag3.jpg",
+          name: "Travel Holdall",
+          price: "£72"
+        },
+        {
+          image: "assets/bags/bag4.jpg",
+          name: "Minimal Side Bag",
+          price: "£52"
+        }
+      ],
+
+      tshirts: [
+        {
+          image: "assets/tshirts/tshirt1.jpg",
+          name: "White Core T-Shirt",
+          price: "£25"
+        },
+        {
+          image: "assets/tshirts/tshirt2.jpg",
+          name: "Black Oversized T-Shirt",
+          price: "£28"
+        },
+        {
+          image: "assets/tshirts/tshirt3.jpg",
+          name: "Stone Premium Tee",
+          price: "£30"
+        },
+        {
+          image: "assets/tshirts/tshirt4.jpg",
+          name: "Graphic Signature Tee",
+          price: "£34"
+        }
+      ]
+    };
+
+    const selectedProducts = products[category] || products.hoodies;
+
+    selectedProducts.forEach((product, index) => {
+      const card = document.createElement("div");
+      card.className = `product-card ${index === 0 ? "active" : ""}`;
+
+      card.innerHTML = `
+  <img src="${product.image}" alt="${product.name}">
+
+  <div class="product-info">
+    <div class="product-name">${product.name}</div>
+    <div class="product-price">${product.price}</div>
+    <button class="buy-button">Buy</button>
+  </div>
+`;
+
+const buyButton = card.querySelector(".buy-button");
+
+buyButton.addEventListener("click", () => {
+  localStorage.setItem("selectedProduct", JSON.stringify(product));
+  window.location.href = "confirm.html";
+});
+
+      productStage.appendChild(card);
+    });
+
+    const cards = document.querySelectorAll(".product-card");
+
+    let currentIndex = 0;
+    let rotationTimer = null;
+
+    function rotateProducts() {
+      cards[currentIndex].classList.remove("active");
+
+      currentIndex++;
+
+      if (currentIndex >= cards.length) {
+        currentIndex = 0;
+      }
+
+      cards[currentIndex].classList.add("active");
+    }
+
+    if (cards.length > 1) {
+      clearInterval(rotationTimer);
+      rotationTimer = setInterval(rotateProducts, 5000);
+    }
+  </script>
+
+</body>
+</html>

@@ -81,20 +81,21 @@ body::after {
 .orb-hitbox {
   position: absolute;
 
-  top: 60%; /* 👈 MOVED UP (adjust 58–65% to match mic exactly) */
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: 100px;   /* 👈 slightly bigger = better UX */
+  width: 100px;
   height: 100px;
 
   border-radius: 50%;
   cursor: pointer;
 
-  background: rgba(255,0,0,0.15); /* 👈 DEBUG (REMOVE AFTER ALIGNING) */
+  background: transparent;   /* 👈 fully invisible */
   box-shadow: none;
+  opacity: 1;                /* keep clickable */
 
-  transition: box-shadow 0.3s ease;
+  z-index: 5;                /* 👈 ensures it's above image */
 }
 
 /* LISTENING STATE */

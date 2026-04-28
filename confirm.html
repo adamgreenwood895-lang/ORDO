@@ -1,1 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirm Order</title>
 
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #000;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    .confirm-card {
+      width: 100%;
+      max-width: 380px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      overflow: hidden;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    .confirm-card img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .content {
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    .name {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .price {
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .meta {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 24px;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .meta-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .meta-label {
+      color: rgba(255,255,255,0.55);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    button {
+      flex: 1;
+      border: none;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .back {
+      background: rgba(255,255,255,0.08);
+      color: white;
+    }
+
+    .continue {
+      background: white;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="confirm-card" id="confirmCard"></div>
+
+  <script>
+    const product = JSON.parse(localStorage.getItem("selectedProduct"));
+
+    if (!product) {
+      window.location.href = "products.html";
+    }
+
+    const sizes = ["Small", "Medium", "Large"];
+    const colours = ["Black", "Grey", "White"];
+    const delivery = ["Tomorrow", "Friday", "2–3 Days"];
+
+    const randomSize = sizes[Math.floor(Math.random() * sizes.length)];
+    const randomColour = colours[Math.floor(Math.random() * colours.length)];
+    const randomDelivery = delivery[Math.floor(Math.random() * delivery.length)];
+
+    document.getElementById("confirmCard").innerHTML = `
+      <img src="${product.image}" alt="${product.name}">
+
+      <div class="content">
+        <h1>Confirm Order</h1>
+
+        <div class="name">${product.name}</div>
+        <div class="price">${product.price}</div>
+
+        <div class="meta">
+          <div class="meta-row">
+            <span class="meta-label">Size</span>
+            <span>${randomSize}</span>
+          </div>
+
+          <div class="meta-row">
+            <span class="meta-label">Colour</span>
+            <span>${randomColour}</span>
+          </div>
+
+          <div class="meta-row">
+            <span class="meta-label">Delivery</span>
+            <span>${randomDelivery}</span>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button class="back" id="backButton">Back</button>
+          <button class="continue" id="continueButton">Continue</button>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("backButton").onclick = () => {
+      window.location.href = "products.html";
+    };
+
+    document.getElementById("continueButton").onclick = () => {
+      // Confirm page always goes to payment first
+      window.location.href = "payment.html";
+    };
+  </script>
+
+</body>
+</html>

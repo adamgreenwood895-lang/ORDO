@@ -1,1 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment</title>
 
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    .payment-card {
+      width: 100%;
+      max-width: 380px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      padding: 28px;
+      box-sizing: border-box;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    .summary {
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-size: 15px;
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: rgba(255,255,255,0.35);
+    }
+
+    .pay-button {
+      width: 100%;
+      margin-top: 14px;
+      border: none;
+      border-radius: 18px;
+      padding: 18px;
+      background: white;
+      color: black;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .pay-button.processing {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    .pay-button.approved {
+      background: white;
+      color: black;
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="payment-card">
+    <h1>Payment</h1>
+    <div class="summary" id="summary"></div>
+
+    <div class="field">
+      <input type="text" placeholder="Cardholder Name">
+    </div>
+
+    <div class="field">
+      <input type="text" placeholder="Card Number">
+    </div>
+
+    <div class="field">
+      <input type="text" placeholder="Expiry Date">
+    </div>
+
+    <div class="field">
+      <input type="text" placeholder="CVV">
+    </div>
+
+    <button class="pay-button" id="payButton">Pay Now</button>
+  </div>
+
+  <script>
+    const product = JSON.parse(localStorage.getItem("selectedProduct"));
+
+    if (!product) {
+      window.location.href = "products.html";
+    }
+
+    document.getElementById("summary").textContent = `${product.name} • ${product.price}`;
+
+    const payButton = document.getElementById("payButton");
+
+    payButton.addEventListener("click", () => {
+      payButton.disabled = true;
+      payButton.classList.add("processing");
+      payButton.textContent = "Processing...";
+
+      setTimeout(() => {
+        payButton.classList.remove("processing");
+        payButton.classList.add("approved");
+        payButton.textContent = "Approved";
+      }, 1500);
+
+      setTimeout(() => {
+        // Only after payment is approved do we move to tracking
+        window.location.href = "tracking.html";
+      }, 2600);
+    });
+  </script>
+
+</body>
+</html>

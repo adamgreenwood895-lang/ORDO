@@ -1,1 +1,218 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
+/* BODY */
+body {
+  font-family: -apple-system, sans-serif;
+  color: white;
+  overflow: hidden;
+  height: 100vh;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.35) 0%,
+    rgba(0,0,0,0.15) 20%,
+    rgba(0,0,0,0) 40%
+  );
+
+  pointer-events: none;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255,255,255,0.08) 45%,
+    rgba(255,255,255,0.15) 50%,
+    rgba(255,255,255,0.08) 55%,
+    transparent 100%
+  );
+
+  transform: translateX(-100%);
+  animation: lightSweep 8s ease-in-out infinite;
+
+  pointer-events: none;
+}
+@keyframes lightSweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  50% {
+    transform: translateX(120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+/* BACKGROUND */
+.bg {
+  position: fixed;
+  inset: 0;
+  background: url("./assets/background.png") no-repeat center center;
+  background-size: cover;
+}
+/* UI */
+.voice-ui {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+
+/* TAP ZONE (INVISIBLE) */
+.orb-hitbox {
+  position: absolute;
+
+  top: 75%;              /* 👈 adjust this, not bottom */
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  background: none; /* keep for now (debug) */
+  box-shadow: none;
+}
+.orb-hitbox.listening {
+  box-shadow:
+    0 0 20px rgba(120,180,255,0.4),
+    0 0 40px rgba(120,180,255,0.2);
+    }
+#chat {
+  position: absolute;
+  top: 18%;
+  left: 0;
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.message {
+  background: none;
+  padding: 0;
+  color: rgba(255,255,255,0.85);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+.message.ai {
+  align-self: flex-start;
+  background: rgba(255,255,255,0.15);
+}
+
+.message.user {
+  align-self: flex-end;
+  background: rgba(120,180,255,0.25);
+}
+
+.message.typing {
+  opacity: 0.6;
+  font-style: italic;
+}
+/* PRODUCTS PAGE */
+.bg-landing {
+  background: #000;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.products-page {
+  min-height: 100vh;
+  padding: 48px 20px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.category-title {
+  color: rgba(255,255,255,0.9);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+  text-transform: capitalize;
+}
+
+.product-stage {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  height: 480px;
+}
+
+.product-card {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+
+  opacity: 0;
+  transform: scale(0.98);
+  pointer-events: none;
+
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+.product-card.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.product-card img {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  display: block;
+}
+
+.product-info {
+  padding: 18px;
+}
+
+.product-name {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.product-price {
+  color: rgba(255,255,255,0.65);
+  font-size: 15px;
+  margin-top: 6px;
+}
+
+.buy-button {
+  margin-top: 18px;
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  background: white;
+  color: black;
+  font-size: 15px;
+  font-weight: 600;
+  }

@@ -81,17 +81,17 @@ body::after {
 .orb-hitbox {
   position: absolute;
 
-  top: 70%;
+  top: 85%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
 
   border-radius: 50%;
   cursor: pointer;
 
-  background: transparent;   /* 👈 fully invisible */
+  background: rgba(255, 0, 0, 0.5);   /* 👈 fully invisible */
   box-shadow: none;
   opacity: 1;                /* keep clickable */
 

@@ -12,14 +12,15 @@ body {
   color: white;
   background-color: #000;
   
-  /* Use dvh to prevent "squashing" on mobile browsers */
+  /* Use dvh for perfect mobile scaling without squashing */
   height: 100dvh; 
   width: 100vw;
   overflow: hidden;
 
-  /* Optimized Background Logic */
+  /* Optimized Background: ensuring crisp rendering */
   background: url("./assets/backgroundnewclear1.png") no-repeat center center;
   background-size: cover; 
+  image-rendering: -webkit-optimize-contrast;
 }
 
 /* OVERLAYS (Light Effects) */
@@ -33,23 +34,23 @@ body::after {
 }
 
 body::before {
+  /* Reduced opacity to let the Ordo logo pop without being dulled */
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.35) 0%,
-    rgba(0,0,0,0.15) 20%,
-    rgba(0,0,0,0) 40%
+    rgba(0,0,0,0.2) 0%,
+    rgba(0,0,0,0) 30%
   );
 }
 
 body::after {
+  /* Using mix-blend-mode overlay to keep colors sharp during the sweep */
   background: linear-gradient(
     120deg,
     transparent 0%,
-    rgba(255,255,255,0.08) 45%,
-    rgba(255,255,255,0.15) 50%,
-    rgba(255,255,255,0.08) 55%,
+    rgba(255,255,255,0.12) 50%,
     transparent 100%
   );
+  mix-blend-mode: overlay;
   transform: translateX(-100%);
   animation: lightSweep 8s ease-in-out infinite;
 }
@@ -75,11 +76,12 @@ body::after {
 /* TAP ZONE (INVISIBLE) */
 .orb-hitbox {
   position: absolute;
-  /* Adjust 'top' to move up/down, 'width/height' for size */
-  top: 67%;
+  /* top: lower % = higher up | Higher % = lower down */
+  top: 72%; 
   left: 50%;
   transform: translate(-50%, -50%);
 
+  /* size: ensure these match for a circle */
   width: 160px;
   height: 160px;
 

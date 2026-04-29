@@ -61,7 +61,7 @@ body::after {
 .bg {
   position: fixed;
   inset: 0;
-  background: url("./assets/backgroundnew1.png") no-repeat center center;
+  background: url("./assets/backgroundnew2.png") no-repeat center center;
   background-size: cover;
 }
 /* UI */

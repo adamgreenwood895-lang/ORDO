@@ -132,7 +132,7 @@ body::after {
 
 .message.ai {
   align-self: center;
-  background: rgba(255,255,255,0.15);
+  background: none;
 }
 
 .message.user {

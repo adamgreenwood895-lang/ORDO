@@ -18,7 +18,7 @@ body {
   overflow: hidden;
 
   /* Optimized Background Logic */
-  background: url("./assets/newbackground.png") no-repeat center center;
+  background: url("./assets/newbackground1.png") no-repeat center center;
   background-size: cover; 
 }
 

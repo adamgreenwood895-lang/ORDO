@@ -76,12 +76,12 @@ body::after {
 .orb-hitbox {
   position: absolute;
   /* Adjust 'top' to move up/down, 'width/height' for size */
-  top: 65%;
+  top: 67%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
 
   border-radius: 50%;
   cursor: pointer;

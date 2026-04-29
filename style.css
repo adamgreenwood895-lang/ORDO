@@ -6,32 +6,42 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* BODY */
+/* BODY & BACKGROUND */
 body {
-  font-family: -apple-system, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: white;
+  background-color: #000;
+  
+  /* Use dvh to prevent "squashing" on mobile browsers */
+  height: 100dvh; 
+  width: 100vw;
   overflow: hidden;
-  height: 100vh;
+
+  /* Optimized Background Logic */
+  background: url("./assets/backgroundnew2.png") no-repeat center center;
+  background-size: cover; 
 }
-body::before {
+
+/* OVERLAYS (Light Effects) */
+body::before,
+body::after {
   content: "";
   position: fixed;
   inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
 
+body::before {
   background: linear-gradient(
     to bottom,
     rgba(0,0,0,0.35) 0%,
     rgba(0,0,0,0.15) 20%,
     rgba(0,0,0,0) 40%
   );
-
-  pointer-events: none;
 }
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
 
+body::after {
   background: linear-gradient(
     120deg,
     transparent 0%,
@@ -40,49 +50,23 @@ body::after {
     rgba(255,255,255,0.08) 55%,
     transparent 100%
   );
-
   transform: translateX(-100%);
   animation: lightSweep 8s ease-in-out infinite;
+}
 
-  pointer-events: none;
-}
 @keyframes lightSweep {
-  0% {
-    transform: translateX(-120%);
-  }
-  50% {
-    transform: translateX(120%);
-  }
-  100% {
-    transform: translateX(120%);
-  }
+  0% { transform: translateX(-120%); }
+  50%, 100% { transform: translateX(120%); }
 }
-/* BACKGROUND */
-.bg {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100dvh; /* Use dynamic viewport height */
-  
-  background-image: url("./assets/backgroundnew2.png");
-  background-repeat: no-repeat;
-  background-position: center center;
-  
-  /* COVER ensures the image fills the area by cropping the edges, 
-     rather than squeezing the image to fit. */
-  background-size: cover; 
-  
-  /* Prevent any weird scaling artifacts */
-  background-attachment: scroll; 
-}
-/* UI */
+
+/* UI WRAPPERS */
 .voice-ui {
   position: relative;
-  height: 100vh;
+  height: 100%;
   width: 100%;
+  z-index: 2;
 }
 
-/* OPTIONAL: anchor layer for precise positioning */
 .voice-stage {
   position: absolute;
   inset: 0;
@@ -91,7 +75,7 @@ body::after {
 /* TAP ZONE (INVISIBLE) */
 .orb-hitbox {
   position: absolute;
-
+  /* Adjust 'top' to move up/down, 'width/height' for size */
   top: 85%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -101,15 +85,11 @@ body::after {
 
   border-radius: 50%;
   cursor: pointer;
-
-  background: rgba(255, 0, 0, 0.5);   /* 👈 fully invisible */
-  box-shadow: none;
-  opacity: 1;                /* keep clickable */
-
-  z-index: 5;                /* 👈 ensures it's above image */
+  background: transparent; 
+  z-index: 5;
 }
 
-/* LISTENING STATE */
+/* LISTENING STATE (DO NOT CHANGE BELOW) */
 .orb-hitbox.listening {
   box-shadow:
     0 0 25px rgba(120,180,255,0.5),
@@ -245,4 +225,4 @@ body::after {
   color: black;
   font-size: 15px;
   font-weight: 600;
-}
+  }

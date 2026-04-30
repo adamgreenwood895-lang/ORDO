@@ -4,21 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ORDO | Categories</title>
-<style>
-body {
-  margin: 0;
-  /* Using your high-res background with a dark tint for premium depth */
-  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-              url("./assets/backgroundnewclear1.png");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  min-height: 100dvh;
-}
+<link rel="stylesheet" href="style.css?v=12">
 
-.container { padding: 40px 20px; }
+<style>
+/* 2. Specific Grid fixes for this page only */
+.container { 
+  padding: 80px 20px 40px; 
+  height: 100vh;
+  overflow-y: auto; /* Allows scrolling if you have many products */
+}
 
 .title {
   font-size: 24px;
@@ -26,8 +20,6 @@ body {
   margin-bottom: 30px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: #fff;
-  /* Subtle neon glow to match the orb */
   text-shadow: 0 0 15px rgba(120, 180, 255, 0.4);
 }
 
@@ -35,103 +27,112 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  padding-bottom: 50px;
 }
 
-.card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
+/* We use a different class 'grid-card' to avoid conflicts with 'product-card' */
+.grid-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
   overflow: hidden;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.2s ease;
 }
 
-.card:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
+.grid-card:active { transform: scale(0.96); }
 
-.card img {
+.grid-card img {
   width: 100%;
-  height: 170px;
+  height: 160px;
   object-fit: cover;
-  display: block;
-  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
 }
 
-.info { padding: 16px; }
+.info { padding: 15px; }
 
-.name { 
-  font-size: 13px; 
-  font-weight: 500; 
-  margin-bottom: 4px; 
-  opacity: 0.9;
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
-}
+.name { font-size: 13px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-.price { 
-  font-size: 14px; 
-  color: rgba(120, 180, 255, 1); 
-  font-weight: 700; 
-  margin-bottom: 12px; 
-}
+.price { font-size: 14px; color: rgba(120, 180, 255, 1); font-weight: 700; margin-bottom: 12px; }
 
-.buy {
-  padding: 12px;
+.buy-btn {
+  padding: 10px;
   width: 100%;
   border: none;
-  background: #fff;
-  color: #000;
-  border-radius: 14px;
+  background: white;
+  color: black;
+  border-radius: 12px;
   font-weight: 800;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  cursor: pointer;
 }
 </style>
 </head>
 
-<body>
+<body class="bg-landing">
+
+<header style="position: fixed; top: 0; width: 100%; padding: 20px; z-index: 100;">
+    <div onclick="window.location.href='index.html'" style="cursor: pointer; opacity: 0.6; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">
+      ← Back
+    </div>
+</header>
 
 <div class="container">
   <div class="title" id="title"></div>
   <div class="grid" id="grid"></div>
 </div>
 
-<script src="products.js"></script>
-
 <script>
-let currentType = "hoodies";
+// 4. EMBEDDED DATA (Ensures it works even if products.js fails to load)
+const PRODUCTS_DATA = {
+  hoodies: [
+    { image: "assets/hoodies/hoodie1.jpg", name: "Black Essential Hoodie", price: "£60" },
+    { image: "assets/hoodies/hoodie2.jpg", name: "Stone Oversized Hoodie", price: "£68" },
+    { image: "assets/hoodies/hoodie3.jpg", name: "Grey Signature Hoodie", price: "£72" },
+    { image: "assets/hoodies/hoodie4.jpg", name: "White Minimal Hoodie", price: "£65" }
+  ],
+  tracksuits: [
+    { image: "assets/tracksuits/tracksuit1.jpg", name: "Black Performance", price: "£120" },
+    { image: "assets/tracksuits/tracksuit2.jpg", name: "Grey Tech Set", price: "£128" }
+  ],
+  bags: [
+    { image: "assets/bags/bag1.jpg", name: "Black Crossbody", price: "£45" },
+    { image: "assets/bags/bag2.jpg", name: "Utility Backpack", price: "£58" }
+  ],
+  tshirts: [
+    { image: "assets/tshirts/tshirt1.jpg", name: "White Core Tee", price: "£25" },
+    { image: "assets/tshirts/tshirt2.jpg", name: "Black Oversized Tee", price: "£28" }
+  ]
+};
+
 const titleEl = document.getElementById("title");
 const grid = document.getElementById("grid");
 
 function loadCategory(type) {
-  currentType = type;
   titleEl.innerText = type;
   grid.innerHTML = ""; 
 
-  // Accessing PRODUCTS from products.js
-  const items = PRODUCTS[type];
-
-  setTimeout(() => { speak("Showing " + type); }, 300);
+  // Use the local object to prevent 'PRODUCTS is not defined' errors
+  const items = PRODUCTS_DATA[type] || PRODUCTS_DATA.hoodies;
 
   items.forEach(product => {
     const card = document.createElement("div");
-    card.className = "card";
+    card.className = "grid-card";
 
     card.innerHTML = `
-      <img src="${product.image}" loading="lazy">
+      <img src="${product.image}">
       <div class="info">
         <div class="name">${product.name}</div>
         <div class="price">${product.price}</div>
-        <button class="buy">View Details</button>
+        <button class="buy-btn">Buy</button>
       </div>
     `;
 
-    // 🔥 Added logic to save selection and go to confirm screen
-    card.querySelector(".buy").onclick = () => {
+    // Save selection and go to confirm page
+    card.onclick = () => {
       localStorage.setItem("selectedProduct", JSON.stringify(product));
       window.location.href = "confirm.html";
     };
@@ -140,14 +141,7 @@ function loadCategory(type) {
   });
 }
 
-function speak(text) {
-  window.speechSynthesis.cancel(); // Clear queue
-  const speech = new SpeechSynthesisUtterance(text);
-  speech.lang = "en-GB";
-  speech.rate = 0.95;
-  window.speechSynthesis.speak(speech);
-}
-
+// 5. INITIAL LOAD
 const saved = localStorage.getItem("category") || "hoodies";
 loadCategory(saved);
 </script>

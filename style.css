@@ -11,19 +11,20 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: white;
   background-color: #000;
-  
-  /* Use dvh for perfect mobile scaling without squashing */
   height: 100dvh; 
   width: 100vw;
+  margin: 0;
   overflow: hidden;
+  overscroll-behavior: none;
 
-  /* Optimized Background: ensuring crisp rendering */
-  background: url("./assets/newbackground1.png") no-repeat center center;
-  background-size: cover; 
+  background-image: url("./assets/newbackground1.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover !important; 
   image-rendering: -webkit-optimize-contrast;
 }
 
-/* OVERLAYS (Light Effects) */
+/* OVERLAYS */
 body::before,
 body::after {
   content: "";
@@ -34,22 +35,11 @@ body::after {
 }
 
 body::before {
-  /* Reduced opacity to let the Ordo logo pop without being dulled */
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.2) 0%,
-    rgba(0,0,0,0) 30%
-  );
+  background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 35%);
 }
 
 body::after {
-  /* Using mix-blend-mode overlay to keep colors sharp during the sweep */
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255,255,255,0.12) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
   mix-blend-mode: overlay;
   transform: translateX(-100%);
   animation: lightSweep 8s ease-in-out infinite;
@@ -73,43 +63,36 @@ body::after {
   inset: 0;
 }
 
-/* TAP ZONE (INVISIBLE) */
 .orb-hitbox {
   position: absolute;
-  /* top: lower % = higher up | Higher % = lower down */
   top: 72%; 
   left: 50%;
   transform: translate(-50%, -50%);
-
-  /* size: ensure these match for a circle */
-  width: 160px;
-  height: 160px;
-
+  width: 165px;
+  height: 165px;
   border-radius: 50%;
   cursor: pointer;
   background: transparent; 
   z-index: 5;
 }
 
-/* LISTENING STATE (DO NOT CHANGE BELOW) */
+/* LISTENING STATE (UNCHANGED) */
 .orb-hitbox.listening {
   box-shadow:
     0 0 25px rgba(120,180,255,0.5),
     0 0 60px rgba(120,180,255,0.25);
 }
+
 #chat {
   position: absolute;
   top: 90%;
   left: 0;
   width: 100%;
   padding: 10px;
-
   display: flex;
   flex-direction: column;
   gap: 10px;
-
-  align-items: center;   /* 👈 ADD HERE */
-
+  align-items: center;   
   pointer-events: none;
 }
 
@@ -119,112 +102,138 @@ body::after {
   color: rgba(255,255,255,0.3);
   font-size: 11px;
   letter-spacing: 0.5px;
-
-  text-align: center;   /* 👈 ADD HERE */
+  text-align: center;   
 }
 
-.message.ai {
-  align-self: center;
-  background: none;
-}
+.message.ai { align-self: center; background: none; }
+.message.user { align-self: flex-end; background: rgba(120,180,255,0.25); }
+.message.typing { opacity: 0.6; font-style: italic; }
 
-.message.user {
-  align-self: flex-end;
-  background: rgba(120,180,255,0.25);
-}
+/* --- PRODUCTS PAGE (EXCITING ENHANCEMENTS) --- */
 
-.message.typing {
-  opacity: 0.6;
-  font-style: italic;
-}
-/* PRODUCTS PAGE */
 .bg-landing {
-  background: #000;
-  min-height: 100vh;
+  /* Creating an animated "Cyber Mesh" background */
+  background: 
+    radial-gradient(at 0% 0%, rgba(45, 90, 255, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(120, 180, 255, 0.1) 0px, transparent 50%),
+    #030305;
+  min-height: 100dvh;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* Adding a subtle tech-grid overlay */
+.bg-landing::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
 }
 
 .products-page {
-  min-height: 100vh;
-  padding: 48px 20px 80px;
+  min-height: 100dvh;
+  padding: 60px 20px 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .category-title {
-  color: rgba(255,255,255,0.9);
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  margin-bottom: 30px;
-  text-transform: capitalize;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  /* Text glow */
+  text-shadow: 0 0 20px rgba(120, 180, 255, 0.4);
 }
 
 .product-stage {
   position: relative;
   width: 100%;
   max-width: 320px;
-  height: 480px;
+  height: 500px;
+  perspective: 1000px; /* Gives cards a 3D feel */
 }
 
 .product-card {
   position: absolute;
   inset: 0;
-
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 24px;
-
-  backdrop-filter: blur(18px);
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 32px;
+  backdrop-filter: blur(25px); /* Increased blur for better glass effect */
   overflow: hidden;
-
   opacity: 0;
-  transform: scale(0.98);
+  transform: translateY(20px) scale(0.95);
   pointer-events: none;
-
-  transition:
-    opacity 1s ease,
-    transform 1s ease;
+  transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
 }
 
 .product-card.active {
   opacity: 1;
-  transform: scale(1);
+  transform: translateY(0) scale(1);
   pointer-events: auto;
+  /* Adds a subtle "breathing" animation to the active card */
+  animation: cardFloat 4s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .product-card img {
   width: 100%;
-  height: 360px;
+  height: 340px;
   object-fit: cover;
   display: block;
+  /* Darken the bottom of the image slightly to make text pop */
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
 }
 
 .product-info {
-  padding: 18px;
+  padding: 24px;
 }
 
 .product-name {
   color: white;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .product-price {
-  color: rgba(255,255,255,0.65);
-  font-size: 15px;
+  color: rgba(120, 180, 255, 0.8); /* Accent color for price */
+  font-size: 16px;
   margin-top: 6px;
+  font-weight: 500;
 }
 
 .buy-button {
-  margin-top: 18px;
+  margin-top: 20px;
   width: 100%;
   border: none;
-  border-radius: 14px;
-  padding: 14px;
-  background: white;
-  color: black;
-  font-size: 15px;
-  font-weight: 600;
-  }
+  border-radius: 16px;
+  padding: 16px;
+  background: #fff;
+  color: #000;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.buy-button:active {
+  transform: scale(0.95);
+  background: rgba(120, 180, 255, 1);
+}

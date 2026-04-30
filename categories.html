@@ -3,26 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ORDO</title>
+<title>ORDO | Categories</title>
 <style>
 body {
   margin: 0;
-  /* Matching your main mesh theme */
-  background: radial-gradient(at 0% 0%, rgba(45, 90, 255, 0.1) 0px, transparent 50%), #000;
+  /* Using your high-res background with a dark tint for premium depth */
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+              url("./assets/backgroundnewclear1.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   min-height: 100dvh;
 }
 
-.container { padding: 30px 20px; }
+.container { padding: 40px 20px; }
 
 .title {
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 25px;
-  letter-spacing: 1.5px;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 30px;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.9);
+  color: #fff;
+  /* Subtle neon glow to match the orb */
+  text-shadow: 0 0 15px rgba(120, 180, 255, 0.4);
 }
 
 .grid {
@@ -32,44 +38,59 @@ body {
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
+  border-radius: 24px;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  transition: transform 0.2s ease;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.card:active { transform: scale(0.96); }
+.card:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
 
 .card img {
   width: 100%;
-  height: 160px;
+  height: 170px;
   object-fit: cover;
-  /* Blends the bottom of the image into the card */
-  mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+  display: block;
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
 }
 
-.info { padding: 15px; }
+.info { padding: 16px; }
 
-.name { font-size: 14px; font-weight: 500; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.name { 
+  font-size: 13px; 
+  font-weight: 500; 
+  margin-bottom: 4px; 
+  opacity: 0.9;
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
 
-.price { font-size: 13px; color: rgba(120, 180, 255, 1); font-weight: 600; margin-bottom: 10px; }
+.price { 
+  font-size: 14px; 
+  color: rgba(120, 180, 255, 1); 
+  font-weight: 700; 
+  margin-bottom: 12px; 
+}
 
 .buy {
-  padding: 10px;
+  padding: 12px;
   width: 100%;
   border: none;
-  background: white;
-  color: black;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 11px;
+  background: #fff;
+  color: #000;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  cursor: pointer;
 }
 </style>
-
 </head>
 
 <body>
@@ -83,51 +104,50 @@ body {
 
 <script>
 let currentType = "hoodies";
-
 const titleEl = document.getElementById("title");
 const grid = document.getElementById("grid");
 
-// 🔥 LOAD CATEGORY (DYNAMIC)
 function loadCategory(type) {
   currentType = type;
-
   titleEl.innerText = type;
-  grid.innerHTML = ""; // clear old products
+  grid.innerHTML = ""; 
 
+  // Accessing PRODUCTS from products.js
   const items = PRODUCTS[type];
 
-  // 🔊 Voice feedback
-  setTimeout(() => {
-    speak("Showing " + type);
-  }, 300);
+  setTimeout(() => { speak("Showing " + type); }, 300);
 
   items.forEach(product => {
     const card = document.createElement("div");
     card.className = "card";
 
     card.innerHTML = `
-      <img src="${product.image}">
+      <img src="${product.image}" loading="lazy">
       <div class="info">
         <div class="name">${product.name}</div>
         <div class="price">${product.price}</div>
-        <button class="buy">Buy</button>
+        <button class="buy">View Details</button>
       </div>
     `;
+
+    // 🔥 Added logic to save selection and go to confirm screen
+    card.querySelector(".buy").onclick = () => {
+      localStorage.setItem("selectedProduct", JSON.stringify(product));
+      window.location.href = "confirm.html";
+    };
 
     grid.appendChild(card);
   });
 }
 
-// 🔊 AI VOICE
 function speak(text) {
+  window.speechSynthesis.cancel(); // Clear queue
   const speech = new SpeechSynthesisUtterance(text);
   speech.lang = "en-GB";
   speech.rate = 0.95;
-  speech.pitch = 0.9;
   window.speechSynthesis.speak(speech);
 }
 
-// 👇 INITIAL LOAD
 const saved = localStorage.getItem("category") || "hoodies";
 loadCategory(saved);
 </script>

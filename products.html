@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ORDO | Selection</title>
-  <link rel="stylesheet" href="style.css?v=11">
+  <link rel="stylesheet" href="style.css?v=12">
 </head>
 <body class="bg-landing">
 
   <header style="position: fixed; top: 0; width: 100%; padding: 20px; z-index: 100; display: flex; align-items: center;">
-    <div onclick="window.location.href='index.html'" style="cursor: pointer; opacity: 0.6; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">
+    <div onclick="window.location.href='index.html'" style="cursor: pointer; opacity: 0.6; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: white;">
       ← Back
     </div>
   </header>
@@ -21,7 +21,7 @@
   </div>
 
   <script>
-    // 1. DATA INITIALIZATION
+    // 1. DATA (Your original working paths)
     const category = localStorage.getItem("category") || "hoodies";
     const categoryTitle = document.getElementById("categoryTitle");
     const productStage = document.getElementById("productStage");
@@ -57,14 +57,14 @@
 
     const selectedProducts = products[category] || products.hoodies;
 
-    // 2. RENDER CARDS
+    // 2. RENDER (Using your working logic but with the new class names)
     selectedProducts.forEach((product, index) => {
       const card = document.createElement("div");
-      // The CSS 'active' class handles the fade-in and scale-up animation
-      card.className = `product-card ${index === 0 ? "active" : ""}`;
+      // IMPORTANT: Ensure "active" is added to the first card so it isn't invisible
+      card.className = "product-card" + (index === 0 ? " active" : "");
 
       card.innerHTML = `
-        <img src="${product.image}" alt="${product.name}" loading="eager">
+        <img src="${product.image}" alt="${product.name}" style="width:100%; height:350px; object-fit:cover; display:block;">
         <div class="product-info">
           <div class="product-name">${product.name}</div>
           <div class="product-price">${product.price}</div>
@@ -81,31 +81,21 @@
       productStage.appendChild(card);
     });
 
-    // 3. ROTATION LOGIC
+    // 3. ROTATION (Your original working rotation)
     const cards = document.querySelectorAll(".product-card");
     let currentIndex = 0;
-    let rotationTimer = null;
 
     function rotateProducts() {
-      if (cards.length === 0) return;
+      if (cards.length <= 1) return;
       
       cards[currentIndex].classList.remove("active");
       currentIndex = (currentIndex + 1) % cards.length;
       cards[currentIndex].classList.add("active");
     }
 
-    // Auto-rotate every 5 seconds if there's more than one product
     if (cards.length > 1) {
-      rotationTimer = setInterval(rotateProducts, 5000);
+      setInterval(rotateProducts, 5000);
     }
-
-    // Voice prompt for the product list
-    window.onload = () => {
-      const speech = new SpeechSynthesisUtterance(`Exploring ${category} collection.`);
-      speech.lang = "en-GB";
-      speech.rate = 0.9;
-      window.speechSynthesis.speak(speech);
-    };
   </script>
 
 </body>

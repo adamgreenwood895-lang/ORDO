@@ -1,4 +1,6 @@
-/* RESET */
+/* =========================================
+   1. RESET & GLOBAL
+   ========================================= */
 * {
   margin: 0;
   padding: 0;
@@ -6,30 +8,36 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* BODY & BACKGROUND (ORDO MAIN SCREEN) */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: white;
-  background-color: #000;
-  
+  background-color: #000; /* This creates the "Solid Black Border" */
   height: 100dvh; 
   width: 100vw;
   margin: 0;
   overflow: hidden;
   overscroll-behavior: none;
+}
 
-  /* ANTI-SQUASH LOGIC */
+/* =========================================
+   2. FRONTEND LANDING (ANTI-SQUASH)
+   This only targets the main screen, not product pages.
+   ========================================= */
+body:not(.bg-landing) {
   background-image: url("./assets/backgroundnewclear1.png");
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: cover !important; 
+  
+  /* THE FIX: 'contain' ensures the image NEVER squashes. 
+     The black background-color fills the rest of the screen. */
+  background-size: contain !important; 
   
   image-rendering: -webkit-optimize-contrast;
 }
 
-/* OVERLAYS */
-body::before,
-body::after {
+/* Atmospheric Overlays */
+body:not(.bg-landing)::before,
+body:not(.bg-landing)::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -37,12 +45,13 @@ body::after {
   z-index: 1;
 }
 
-body::before {
-  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 30%);
+body:not(.bg-landing)::before {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 40%);
 }
 
-body::after {
-  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+/* The Light Sweep Shimmer */
+body:not(.bg-landing)::after {
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
   mix-blend-mode: overlay;
   transform: translateX(-100%);
   animation: lightSweep 8s ease-in-out infinite;
@@ -53,7 +62,9 @@ body::after {
   50%, 100% { transform: translateX(120%); }
 }
 
-/* UI WRAPPERS */
+/* =========================================
+   3. VOICE UI (ORB & CHAT)
+   ========================================= */
 .voice-ui {
   position: relative;
   height: 100%;
@@ -61,12 +72,6 @@ body::after {
   z-index: 2;
 }
 
-.voice-stage {
-  position: absolute;
-  inset: 0;
-}
-
-/* TAP ZONE (INVISIBLE) */
 .orb-hitbox {
   position: absolute;
   top: 72%; 
@@ -80,80 +85,68 @@ body::after {
   z-index: 5;
 }
 
-/* LISTENING STATE (DO NOT CHANGE) */
 .orb-hitbox.listening {
   box-shadow:
-    0 0 25px rgba(120,180,255,0.5),
-    0 0 60px rgba(120,180,255,0.25);
+    0 0 30px rgba(120,180,255,0.4),
+    0 0 70px rgba(120,180,255,0.2);
 }
 
 #chat {
   position: absolute;
-  top: 90%;
+  top: 88%;
   left: 0;
   width: 100%;
   padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   align-items: center;   
   pointer-events: none;
 }
 
 .message {
-  background: none;
-  padding: 0;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.35);
   font-size: 11px;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   text-align: center;   
 }
 
-.message.ai { align-self: center; background: none; }
-.message.user { align-self: flex-end; background: rgba(120,180,255,0.25); }
-.message.typing { opacity: 0.6; font-style: italic; }
-
-/* PRODUCTS PAGE (ENHANCED) */
+/* =========================================
+   4. PRODUCTS PAGE (MESH THEME)
+   ========================================= */
 .bg-landing {
-  /* Dynamic Mesh Background */
   background: 
-    radial-gradient(at 0% 0%, rgba(45, 90, 255, 0.1) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(120, 180, 255, 0.05) 0px, transparent 50%),
+    radial-gradient(at 0% 0%, rgba(45, 90, 255, 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(120, 180, 255, 0.06) 0px, transparent 50%),
     #030305;
   min-height: 100dvh;
-  overflow-x: hidden;
-  position: relative;
 }
 
-/* Subgrid effect */
 .bg-landing::after {
   content: "";
   position: fixed;
   inset: 0;
   background-image: linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
                     linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-size: 45px 45px;
   pointer-events: none;
 }
 
 .products-page {
-  min-height: 100dvh;
   padding: 60px 20px 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  z-index: 1;
 }
 
 .category-title {
   color: #fff;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 3px;
   margin-bottom: 30px;
   text-transform: uppercase;
-  text-shadow: 0 0 15px rgba(120, 180, 255, 0.3);
+  text-shadow: 0 0 20px rgba(120, 180, 255, 0.4);
 }
 
 .product-stage {
@@ -161,72 +154,18 @@ body::after {
   width: 100%;
   max-width: 320px;
   height: 500px;
-  perspective: 1200px; /* Enhanced 3D depth */
+  perspective: 1500px; 
 }
 
 .product-card {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.04) 100%);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 32px;
   backdrop-filter: blur(20px);
   overflow: hidden;
-  
   opacity: 0;
   transform: translateY(30px) scale(0.92);
   pointer-events: none;
-  transition: all 0.7s cubic-bezier(0.15, 0.85, 0.35, 1);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-}
-
-.product-card.active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-  animation: cardFloat 4s ease-in-out infinite;
-}
-
-@keyframes cardFloat {
-  0%, 100% { transform: translateY(0) rotateX(0deg); }
-  50% { transform: translateY(-8px) rotateX(1deg); }
-}
-
-.product-card img {
-  width: 100%;
-  height: 350px;
-  object-fit: cover;
-  display: block;
-}
-
-.product-info {
-  padding: 20px;
-}
-
-.product-name {
-  color: white;
-  font-size: 19px;
-  font-weight: 600;
-}
-
-.product-price {
-  color: rgba(120, 180, 255, 0.9);
-  font-size: 16px;
-  margin-top: 5px;
-  font-weight: 500;
-}
-
-.buy-button {
-  margin-top: 18px;
-  width: 100%;
-  border: none;
-  border-radius: 16px;
-  padding: 15px;
-  background: #fff;
-  color: #000;
-  font-size: 15px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-}
+  transition: all 0.8s cubic-bezier(0.15,
